@@ -6,7 +6,7 @@ const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
 
 	console.log("Conversations before rendering:", conversations);
-	console.log(Array.isArray(map))
+	console.log("Is conversations an array?", Array.isArray(conversations)); // Check conversations instead of e
 
 	// Ensure conversations is always an array
 	const safeConversations = Array.isArray(conversations) ? conversations : [];
