@@ -11,32 +11,24 @@ export const useSocketContext = () => {
 export const SocketContextProvider = ({ children }) => {
 	const [socket, setSocket] = useState(null);
 	const [onlineUsers, setOnlineUsers] = useState([]);
-	const [messages, setMessages] = useState([]); // New state for messages
 	const { authUser } = useAuthContext();
 
 	useEffect(() => {
 		if (authUser) {
-			const newSocket = io("https://chat-app-voao.onrender.com", {
-				transports: ["websocket", "polling"], // Ensures Render compatibility
+			const socket = io("http://localhost:5000", {
 				query: {
 					userId: authUser._id,
 				},
 			});
 
-			setSocket(newSocket);
+			setSocket(socket);
 
-			// ✅ Listen for online users
-			newSocket.on("getOnlineUsers", (users) => {
+			// socket.on() is used to listen to the events. can be used both on client and server side
+			socket.on("getOnlineUsers", (users) => {
 				setOnlineUsers(users);
 			});
 
-			// ✅ Listen for new messages
-			newSocket.on("receiveMessage", (message) => {
-				setMessages((prev) => [...prev, message]); // Update instantly
-			});
-
-			// Cleanup on unmount
-			return () => newSocket.close();
+			return () => socket.close();
 		} else {
 			if (socket) {
 				socket.close();
@@ -45,5 +37,5 @@ export const SocketContextProvider = ({ children }) => {
 		}
 	}, [authUser]);
 
-	return <SocketContext.Provider value={{ socket, onlineUsers, messages, setMessages }}>{children}</SocketContext.Provider>;
+	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
 };
