@@ -4,6 +4,13 @@ import Conversation from "./Conversation";
 
 const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
+
+	// Ensure conversations is always an array
+	if (!Array.isArray(conversations)) {
+		console.error("Expected conversations to be an array, got:", conversations);
+		return <p>Error loading conversations</p>;
+	}
+
 	return (
 		<div className='py-2 flex flex-col overflow-auto'>
 			{conversations.map((conversation, idx) => (
@@ -15,11 +22,12 @@ const Conversations = () => {
 				/>
 			))}
 
-			{loading ? <span className='loading loading-spinner mx-auto'></span> : null}
+			{loading && <span className='loading loading-spinner mx-auto'></span>}
 		</div>
 	);
 };
 export default Conversations;
+
 
 // STARTER CODE SNIPPET
 // import Conversation from "./Conversation";
