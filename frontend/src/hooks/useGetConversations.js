@@ -11,12 +11,13 @@ const useGetConversations = () => {
 			try {
 				const res = await fetch("/api/users");
 				const data = await res.json();
-				if (data.error) {
-					throw new Error(data.error);
+				if (!Array.isArray(data)) {
+					throw new Error("Invalid response format: expected an array");
 				}
 				setConversations(data);
 			} catch (error) {
 				toast.error(error.message);
+				setConversations([]); // Ensure conversations is always an array
 			} finally {
 				setLoading(false);
 			}
