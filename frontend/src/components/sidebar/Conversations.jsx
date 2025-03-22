@@ -6,6 +6,7 @@ const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
 
 	console.log("Conversations before rendering:", conversations);
+	console.log(Array.isArray(e))
 
 	// Ensure conversations is always an array
 	const safeConversations = Array.isArray(conversations) ? conversations : [];
