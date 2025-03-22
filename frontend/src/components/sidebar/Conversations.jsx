@@ -5,17 +5,22 @@ import Conversation from "./Conversation";
 const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
 
+	console.log("Conversations before rendering:", conversations); // ✅ Debugging log
+
 	// Ensure conversations is always an array
-	const safeConversations = Array.isArray(conversations) ? conversations : [];
+	if (!Array.isArray(conversations)) {
+		console.error("Expected conversations to be an array, but got:", conversations);
+		return <p>Error loading conversations</p>;
+	}
 
 	return (
 		<div className='py-2 flex flex-col overflow-auto'>
-			{safeConversations.map((conversation, idx) => (
+			{conversations.map((conversation, idx) => (
 				<Conversation
 					key={conversation._id}
 					conversation={conversation}
 					emoji={getRandomEmoji()}
-					lastIdx={idx === safeConversations.length - 1}
+					lastIdx={idx === conversations.length - 1}
 				/>
 			))}
 
