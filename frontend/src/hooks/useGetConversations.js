@@ -11,19 +11,12 @@ const useGetConversations = () => {
 			try {
 				const res = await fetch("/api/users");
 				const data = await res.json();
-
-				console.log("Fetched conversations:", data);
-
-				// Ensure it's always an array
-				if (!Array.isArray(data)) {
-					throw new Error("Invalid API response: Expected an array but got " + typeof data);
+				if (data.error) {
+					throw new Error(data.error);
 				}
-
 				setConversations(data);
 			} catch (error) {
 				toast.error(error.message);
-				console.error("Error fetching conversations:", error);
-				setConversations([]); // Ensure it's always an array
 			} finally {
 				setLoading(false);
 			}
@@ -34,5 +27,4 @@ const useGetConversations = () => {
 
 	return { loading, conversations };
 };
-
 export default useGetConversations;
