@@ -5,21 +5,17 @@ import Conversation from "./Conversation";
 const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
 
-	console.log("Fetched conversations:", conversations);
-
-	if (!Array.isArray(conversations)) {
-		console.error("Expected conversations to be an array, got:", conversations);
-		return <p>Error loading conversations</p>;
-	}
+	// Ensure conversations is always an array
+	const safeConversations = Array.isArray(conversations) ? conversations : [];
 
 	return (
 		<div className='py-2 flex flex-col overflow-auto'>
-			{conversations.map((conversation, idx) => (
+			{safeConversations.map((conversation, idx) => (
 				<Conversation
 					key={conversation._id}
 					conversation={conversation}
 					emoji={getRandomEmoji()}
-					lastIdx={idx === conversations.length - 1}
+					lastIdx={idx === safeConversations.length - 1}
 				/>
 			))}
 
@@ -27,22 +23,5 @@ const Conversations = () => {
 		</div>
 	);
 };
+
 export default Conversations;
-
-
-// STARTER CODE SNIPPET
-// import Conversation from "./Conversation";
-
-// const Conversations = () => {
-// 	return (
-// 		<div className='py-2 flex flex-col overflow-auto'>
-// 			<Conversation />
-// 			<Conversation />
-// 			<Conversation />
-// 			<Conversation />
-// 			<Conversation />
-// 			<Conversation />
-// 		</div>
-// 	);
-// };
-// export default Conversations;
