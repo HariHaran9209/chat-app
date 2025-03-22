@@ -10,6 +10,7 @@ const io = new Server(server, {
 		origin: ["http://localhost:3000", "https://chat-app-voao.onrender.com"]
 		methods: ["GET", "POST"],
 	},
+	transports: ["websocket", "polling"],
 });
 
 export const getReceiverSocketId = (receiverId) => {
