@@ -5,7 +5,8 @@ import Conversation from "./Conversation";
 const Conversations = () => {
 	const { loading, conversations } = useGetConversations();
 
-	// Ensure conversations is always an array
+	console.log("Fetched conversations:", conversations);
+
 	if (!Array.isArray(conversations)) {
 		console.error("Expected conversations to be an array, got:", conversations);
 		return <p>Error loading conversations</p>;
